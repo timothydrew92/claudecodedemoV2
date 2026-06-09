@@ -52,12 +52,13 @@ export default function App() {
         const message = await getMotivation(habit.name, currentStreak);
         setToast({ habitName: habit.name, message, loading: false });
       } catch {
-        // Silently dismiss on API error — don't interrupt the UX
-        setToast(null);
+        setToast({ habitName: habit.name, message: "Great work — every rep counts!", loading: false });
       }
     },
     [habits, isCompletedToday, toggleComplete, getStreak]
   );
+
+  const handleDismissToast = useCallback(() => setToast(null), []);
 
   return (
     <div className="app">
@@ -82,7 +83,7 @@ export default function App() {
           t={t}
         />
       </main>
-      <Toast toast={toast} onDismiss={() => setToast(null)} />
+      <Toast toast={toast} onDismiss={handleDismissToast} />
     </div>
   );
 }
